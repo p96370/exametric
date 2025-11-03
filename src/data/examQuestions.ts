@@ -51,8 +51,8 @@ export const examData = {
       section2_standard: {
         title: "Section 2: Audio - Standard",
         questions: {
-          Q1: { id: "Q1", type: "audio" as const, question: "Expand DRAM.", tts_text: "Expand DRAM.", answers: ["Dynamic Random Access Memory"] },
-          Q2: { id: "Q2", type: "audio" as const, question: "Expand MAC.", tts_text: "Expand MAC.", answers: ["Media Access Control"] },
+          Q1: { id: "Q1", type: "audio" as const, question: "What does the acronym DRAM stand for?", tts_text: "What does the acronym DRAM stand for?", answers: ["Dynamic Random Access Memory"] },
+          Q2: { id: "Q2", type: "audio" as const, question: "What does the acronym MAC stand for?", tts_text: "What does the acronym MAC stand for?", answers: ["Media Access Control"] },
           Q3: { id: "Q3", type: "audio" as const, question: "Which software manages computer hardware?", tts_text: "Which software manages computer hardware?", answers: ["Operating system", "OS"] },
           Q4: { id: "Q4", type: "audio" as const, question: "Expand WAN.", tts_text: "Expand WAN.", answers: ["Wide Area Network"] },
           Q5: { id: "Q5", type: "audio" as const, question: "Which protocol transfers web data?", tts_text: "Which protocol transfers web data?", answers: ["HTTP"] },
@@ -67,8 +67,8 @@ export const examData = {
       section2_control: {
         title: "Section 2: Audio - Control",
         questions: {
-          Q1: { id: "Q1", type: "audio" as const, question: "Expand SRAM.", tts_text: "Expand SRAM.", answers: ["Static Random Access Memory"] },
-          Q2: { id: "Q2", type: "audio" as const, question: "Expand ISA.", tts_text: "Expand ISA.", answers: ["Instruction Set Architecture"] },
+          Q1: { id: "Q1", type: "audio" as const, question: "What does the acronym SRAM stand for?", tts_text: "What does the acronym SRAM stand for?", answers: ["Static Random Access Memory"] },
+          Q2: { id: "Q2", type: "audio" as const, question: "What does the acronym ISA stand for?", tts_text: "What does the acronym ISA stand for?", answers: ["Instruction Set Architecture"] },
           Q3: { id: "Q3", type: "audio" as const, question: "Which protocol secures web communication?", tts_text: "Which protocol secures web communication?", answers: ["HTTPS"] },
           Q4: { id: "Q4", type: "audio" as const, question: "Which port number is used by HTTP?", tts_text: "Which port number is used by HTTP?", answers: ["80"] },
           Q5: { id: "Q5", type: "audio" as const, question: "Which CPU part temporarily stores instructions and data?", tts_text: "Which CPU part temporarily stores instructions and data?", answers: ["Cache"] },
