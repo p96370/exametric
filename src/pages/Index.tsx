@@ -22,7 +22,7 @@ const Index = () => {
               
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-fade-in">
                 <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                  Examertric
+                  Exametric
                 </span>
               </h1>
               
