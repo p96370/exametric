@@ -5,6 +5,8 @@ import { examData, Question } from '@/data/examQuestions';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { AudioRecorder } from '@/components/exam/AudioRecorder';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Volume2, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -14,7 +16,7 @@ import { database } from '@/lib/firebase';
 import { ref, push, set } from 'firebase/database';
 import Navigation from '@/components/Navigation';
 
-type SectionId = 'section1_standard' | 'section1_control' | 'section2_standard' | 'section2_control';
+type SectionId = 'section1_accomodation' | 'section2_standard' | 'section2_control' | 'section3_standard' | 'section3_control';
 
 export default function Exam() {
   const { user } = useAuth();
@@ -22,7 +24,7 @@ export default function Exam() {
   const { toast } = useToast();
   const { speak, stop, isSpeaking } = useTextToSpeech();
 
-  const [currentSection, setCurrentSection] = useState<SectionId>('section1_standard');
+  const [currentSection, setCurrentSection] = useState<SectionId>('section1_accomodation');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, { text?: string; audioUrl?: string }>>({});
   const [textAnswer, setTextAnswer] = useState('');
@@ -64,13 +66,33 @@ export default function Exam() {
   }, [questionKey, answers]);
 
   const handleTextAnswerSave = () => {
-    if (!textAnswer.trim()) {
-      toast({
-        title: 'Answer required',
-        description: 'Please provide an answer before continuing.',
-        variant: 'destructive',
-      });
-      return;
+    if (currentQuestion.type === 'multiple') {
+      if (textAnswer.startsWith('other:') && textAnswer.replace('other:', '').trim() === '') {
+        toast({
+          title: 'Answer required',
+          description: 'Please specify your answer for "other".',
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      if (!textAnswer) {
+        toast({
+          title: 'Answer required',
+          description: 'Please select an option before continuing.',
+          variant: 'destructive',
+        });
+        return;
+      }
+    } else { 
+      if (!textAnswer.trim()) {
+        toast({
+          title: 'Answer required',
+          description: 'Please provide an answer before continuing.',
+          variant: 'destructive',
+        });
+        return;
+      }
     }
 
     setAnswers((prev) => ({
@@ -359,6 +381,61 @@ export default function Exam() {
                       className="resize-none"
                     />
                     <Button onClick={handleTextAnswerSave} className="w-full">
+                      Save & Continue
+                    </Button>
+                  </div>
+                )}
+
+                {currentQuestion.type === 'multiple' && currentQuestion.options && (
+                  <div className="space-y-4">
+                    <RadioGroup 
+                      value={textAnswer.startsWith('other:') ? 'other' : textAnswer} 
+                      onValueChange={(value) => {
+                        if (value.toLowerCase() === 'other') {
+                          setTextAnswer('other:');
+                        } else {
+                          setTextAnswer(value);
+                        }
+                      }}
+                    >
+                      <div className="space-y-3">
+                        {currentQuestion.options.map((option, index) => (
+                          <div key={index}>
+                            <div
+                              className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-blue-50 hover:border-blue-200 transition-all"
+                            >
+                              <RadioGroupItem value={option} id={`option-${index}`} />
+                              <Label 
+                                htmlFor={`option-${index}`} 
+                                className="flex-1 cursor-pointer text-base"
+                              >
+                                {option}
+                              </Label>
+                            </div>
+                            
+                            {/* Show text input when "other" is selected */}
+                            {option.toLowerCase() === 'other' && textAnswer.startsWith('other:') && (
+                              <div className="space-y-4">
+                                <Textarea
+                                  value={textAnswer.replace('other:', '')}
+                                  onChange={(e) => setTextAnswer(`other:${e.target.value}`)}
+                                  placeholder="Please specify..."
+                                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </RadioGroup>
+                    <Button 
+                      onClick={handleTextAnswerSave} 
+                      className="w-full" 
+                      disabled={
+                        !textAnswer || 
+                        (textAnswer.startsWith('other:') && textAnswer.replace('other:', '').trim() === '')
+                      }
+                    >
                       Save & Continue
                     </Button>
                   </div>
